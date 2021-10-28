@@ -1,13 +1,8 @@
 import MyRouter from './routes/MyRouter'
-import AuthProvider from './contexts/Auth'
 import React from 'react'
 
 function App() {
-    return (
-        <AuthProvider>
-            <MyRouter />
-        </AuthProvider>
-    )
+    return <MyRouter />
 }
 
 export default App

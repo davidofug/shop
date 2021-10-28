@@ -7,7 +7,7 @@ export function useAuth() {
 }
 
 function AuthProvider({children}) {
-    const [currentUser, setCurrentUser] = React.useState()
+    const [currentUser, setCurrentUser] = React.useState(null)
     const [loading, setLoading] = React.useState(true)
 
     const value = {
@@ -19,7 +19,7 @@ function AuthProvider({children}) {
 
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {children}
         </AuthContext.Provider>
     )
 }
