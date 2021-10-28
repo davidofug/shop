@@ -1,11 +1,13 @@
 import * as React from 'react'
+import PrivateRoute  from './PrivateRoute'
 import Login from '../views/Login'
-import Home from '../views/Shop'
+import Home from '../views/Home'
 import Account from '../views/Account'
 import Cart from '../views/Cart'
 import Checkout from '../views/Checkout'
 import Dashboard from '../views/Dashboard'
 import Pay from '../views/Pay'
+import NotAuthorized from '../views/NotAuthorized'
 
 import {
     BrowserRouter as Router,
@@ -20,16 +22,28 @@ function MyRouter() {
                 <Route path="/" exact>
                     <Home />
                 </Route>
-                <Route path="/posts" exact>
-                    <Posts />
+                <Route path="/not-authorized" exact>
+                    <NotAuthorized />
                 </Route>
-                <Route path="/posts/:id">
-                    <Apost />
+                <Route path="/login" exact>
+                    <Login />
+                </Route>
+                <Route path="/cart">
+                    <Cart />
                 </Route>
 
-                <Route path="/todos">
-                    <Todos />
+                <Route path="/checkout">
+                    <Checkout />
                 </Route>
+                <PrivateRoute path="/dashboard">
+                    <Dashboard />
+                </PrivateRoute>
+                <PrivateRoute path="/account">
+                    <Account />
+                </PrivateRoute>
+                <PrivateRoute path="/pay">
+                    <Pay />
+                </PrivateRoute>
             </Switch>
         </Router>
     )
