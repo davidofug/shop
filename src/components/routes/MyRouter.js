@@ -1,5 +1,6 @@
 import * as React from 'react'
 import PrivateRoute  from './PrivateRoute'
+import PublicRoute  from './PublicRoute'
 import Login from '../views/Login'
 import Home from '../views/Home'
 import Account from '../views/Account'
@@ -20,21 +21,21 @@ function MyRouter() {
     return (
         <Router>
             <Switch>
-                <Route path="/" exact>
+                <PublicRoute path="/" exact>
                     <Home />
-                </Route>
-                <Route path="/not-authorized" >
+                </PublicRoute>
+                <PublicRoute path="/not-authorized" >
                     <NotAuthorized />
-                </Route>
-                <Route path="/login">
+                </PublicRoute>
+                <PublicRoute path="/login">
                     <Login />
-                </Route>
-                <Route path="/cart">
+                </PublicRoute>
+                <PublicRoute path="/cart">
                     <Cart />
-                </Route>
-                <Route path="/checkout">
+                </PublicRoute>
+                <PublicRoute path="/checkout">
                     <Checkout />
-                </Route>
+                </PublicRoute>
                 <PrivateRoute path="/dashboard">
                     <Dashboard />
                 </PrivateRoute>
