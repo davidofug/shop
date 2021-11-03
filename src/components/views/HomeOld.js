@@ -1,11 +1,10 @@
+import {useState} from 'react'
 import { useAuth } from '../contexts/Auth'
-import { useCart } from '../contexts/Cart'
 import { Link } from 'react-router-dom'
 
-function Home() {
+function HomeOld() {
     const { currentUser } = useAuth()
-    const { itemsInCart, setItemsInCart }  = useCart()
-    // const [itemsInCart, setItemsInCart] = useState([])
+    const [itemsInCart, setItemsInCart] = useState([])
     let formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'UGX',
@@ -57,7 +56,7 @@ function Home() {
             <div className="header">
                 <h1>Shop Now</h1>
                 <div>
-                    <Link to="/cart">{itemsInCart?.length} Basket</Link>
+                    <button>{itemsInCart?.length} Basket</button>
                 </div>
             </div>
             <ul className="item-list">
@@ -94,4 +93,4 @@ function Home() {
     )
 }
 
-export default Home
+export default HomeOld

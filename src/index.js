@@ -5,11 +5,14 @@ import App from './components/App';
 import AuthProvider from './components/contexts/Auth'
 
 import reportWebVitals from './reportWebVitals';
+import CartProvider from './components/contexts/Cart';
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
