@@ -1,4 +1,3 @@
-import PublicRoute  from './PublicRoute'
 import PrivateRoute  from './PrivateRoute'
 import NotLoggedIn from '../views/NotLoggedIn'
 import Login from '../views/Login'
