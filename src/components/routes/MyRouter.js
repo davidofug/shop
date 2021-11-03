@@ -24,6 +24,9 @@ function MyRouter() {
                 <Route path="/" exact>
                     <Home />
                 </Route>
+                <Route path="/home" exact>
+                    <Home />
+                </Route>
                 <Route path="/not-logged-in" >
                     <NotLoggedIn />
                 </Route>

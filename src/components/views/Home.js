@@ -1,6 +1,5 @@
 import React from 'react'
 import { useAuth } from '../contexts/Auth'
-import { Redirect } from 'react-router-dom'
 
 function Home() {
     const { currentUser } = useAuth()
@@ -31,8 +30,8 @@ function Home() {
             price: 450000000
         }
     ]
-    if (currentUser)
-        return (<Redirect to={{ pathname: "/dashboard" }} />)
+    // if (currentUser)
+    //     return (<Redirect to={{ pathname: "/dashboard" }} />)
 
     return (
         <div>

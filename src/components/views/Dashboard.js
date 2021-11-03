@@ -5,7 +5,6 @@ function Dashboard() {
     const {currentUser} = useAuth()
     return (
         <div>
-            {currentUser}
             <Link to="/account">Account</Link>
         </div>
     )
