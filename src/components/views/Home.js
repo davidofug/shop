@@ -55,9 +55,18 @@ function Home() {
     return (
         <div>
             <div className="header">
-                <h1>Shop Now</h1>
+                <h1>
+                    <Link to="/">Shop Now</Link>
+                </h1>
                 <div>
-                    <Link to="/cart">{itemsInCart?.length} Basket</Link>
+                    <ul>
+                        <li>
+                        <Link to="/cart">{itemsInCart?.length} Basket</Link>
+                        </li>
+                        <li>
+                            <Link to="/login">Login</Link>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <ul className="item-list">

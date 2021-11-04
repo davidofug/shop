@@ -51,7 +51,7 @@ function MyRouter() {
                     <NotFound />
                 </Route>
             </Switch>
-            </Router>
+        </Router>
     )
 }
 
