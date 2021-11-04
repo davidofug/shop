@@ -15,13 +15,15 @@ function NotLoggedIn() {
             setCurrentUser(loggedIn)
             setLogin(loggedIn)
             setLoading(false)
+        } else {
+            setLoading(false)
         }
     })
 
-    if (isLogin && !isLoading)
+    if (isLogin)
         return <Redirect to={{ pathname: `${history.location.state.from.pathname}` }} />
 
-    if (!isLogin && isLoading)
+    if (isLoading)
         return <Loader />
 
     return (

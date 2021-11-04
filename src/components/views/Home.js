@@ -54,21 +54,6 @@ function Home() {
 
     return (
         <div>
-            <div className="header">
-                <h1>
-                    <Link to="/">Shop Now</Link>
-                </h1>
-                <div>
-                    <ul>
-                        <li>
-                        <Link to="/cart">{itemsInCart?.length} Basket</Link>
-                        </li>
-                        <li>
-                            <Link to="/login">Login</Link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
             <ul className="item-list">
                 {
                     inventoryItems.map((inventoryItem, index) => {
