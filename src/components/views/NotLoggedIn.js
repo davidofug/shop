@@ -22,7 +22,7 @@ function NotLoggedIn() {
 
     if (isLogin)
         return <Redirect to={{ pathname: `${history.location.state.from.pathname}` }} />
-
+    
     if (isLoading)
         return <Loader />
 
