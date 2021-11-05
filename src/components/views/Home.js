@@ -44,6 +44,7 @@ function Home() {
         let selectItem = inventoryItems.filter(theInventoryItem => theInventoryItem._id === itemID)
         // setItemsInCart([...filteredCartItems, selectItem[0]])
         selectItem[0]['qty'] = 1
+        selectItem[0]['subtotal'] = Number(selectItem[0].price)
         setItemsInCart([...filteredCartItems, ...selectItem])
     }
 
