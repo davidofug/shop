@@ -1,9 +1,9 @@
-import {useState}from 'react'
+import { useEffect }from 'react'
 import { useCart } from '../contexts/Cart'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react/cjs/react.development';
 
 function Cart() {
+
     let formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'UGX',
@@ -13,7 +13,8 @@ function Cart() {
     // let [total, setTotal] = useState(0)
 
     useEffect(() => {
-        setTotal( itemsInCart.reduce( (currentItem, previousItem ) => currentItem.subtotal + previousItem.subtotal, 0))
+        let defaultTotal = 0
+        setTotal(itemsInCart.reduce((currentItem, previousItem) => defaultTotal += previousItem.subtotal, 0))
     },[])
 
     if(itemsInCart?.length >0 )
@@ -29,7 +30,8 @@ function Cart() {
                         </tr>
                     </thead>
                     <tbody>
-                        {itemsInCart.map((itemInCart, index ) =>
+                        {/* {itemsInCart.map((itemInCart, index ) => */}
+                        {itemsInCart.map( itemInCart =>
                             <tr className="cart-item" key={itemInCart._id}>
                                 <td>{itemInCart.name}</td>
                                 <td>
@@ -40,28 +42,41 @@ function Cart() {
                                         defaultValue={itemInCart.qty}
                                         placeholder={itemInCart.qty}
                                         onChange={(event) => {
-                                            const item = itemsInCart[index]
-                                            item.qty = Number(event.target.value)
-                                            item['subtotal'] = Number(item.qty) * Number(item.price)
-                                            itemsInCart[index] = item
+                                            // const item = itemsInCart[index]
+                                            // item['qty'] = Number(event.target.value)
+                                            // item['subtotal'] = Number(item.qty) * Number(item.price)
+                                            // itemsInCart[index] = item
+                                            let { value: quantity } = event.target
+
+                                            itemInCart.qty = quantity > 0 ? quantity : 1
+                                            itemInCart.subtotal = itemInCart.qty * itemInCart.price
                                             setItemsInCart([...itemsInCart])
-                                            const subTotals = itemsInCart.map(itemInCart => itemInCart.subtotal)
-                                            const reducer = (currentValue, previosValue) => {
-                                                return  currentValue + previosValue
+
+                                            // const subTotals = itemsInCart.map(itemInCart => itemInCart.subtotal)
+/*                                             const reducer = (currentItem, previousItem) => {
+                                                return  currentItem.subtotal + previousItem.subtotal
                                             }
-                                            setTotal(subTotals.reduce(reducer))
+
+                                            setTotal(subTotals.reduce(reducer)) */
+                                            let newTotal = 0
+                                            itemsInCart.forEach(itemInCart => newTotal += itemInCart.subtotal)
+                                            setTotal(newTotal)
+                                            // setTotal(itemsInCart.reduce((currentItem, previousItem) => currentItem.subtotal + previousItem.subtotal,0))
                                         }
 
                                     } />
                                 </td>
-                                <td>{formatter.format(itemInCart.price)}</td>
-                                <td>{formatter.format(itemInCart.subtotal || itemInCart.price)}</td>
+                                <td>{formatter.format( itemInCart.price )}</td>
+                                <td>{formatter.format( itemInCart.subtotal )}</td>
                             </tr>
                         )}
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th></th><th>Total {formatter.format(total)}</th>
+                            <th></th>
+                            <th></th>
+                            <th>Total</th>
+                            <th>{formatter.format(total)}</th>
                         </tr>
                     </tfoot>
                 </table>
