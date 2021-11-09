@@ -11,11 +11,21 @@ function Cart() {
 
     const { itemsInCart, setItemsInCart, total, setTotal } = useCart();
     // let [total, setTotal] = useState(0)
+    const returnTotal = (items) => {
+        let sum = 0
+        items.forEach(item => sum += item.subtotal)
+        // setTotal(defaultTotal)
+        return sum
+    }
 
     useEffect(() => {
-        let defaultTotal = 0
-        setTotal(itemsInCart.reduce((currentItem, previousItem) => defaultTotal += previousItem.subtotal, 0))
+        setTotal(returnTotal(itemsInCart))
     },[])
+
+    const removeCartItem = itemID => {
+        let newCart = itemsInCart.filter(item => item._id !== itemID)
+        return newCart
+    }
 
     if(itemsInCart?.length >0 )
         return (
@@ -33,7 +43,14 @@ function Cart() {
                         {/* {itemsInCart.map((itemInCart, index ) => */}
                         {itemsInCart.map( itemInCart =>
                             <tr className="cart-item" key={itemInCart._id}>
-                                <td>{itemInCart.name}</td>
+                                <td>{itemInCart.name}<br/>
+                                    <button onClick={() => {
+                                        let newItemsInCart = removeCartItem(itemInCart._id)
+                                        setItemsInCart([...newItemsInCart])
+                                        setTotal(returnTotal(newItemsInCart))
+
+                                    }}>X Remove From Cart</button>
+                                </td>
                                 <td>
                                     <input
                                         type="number"
@@ -58,10 +75,11 @@ function Cart() {
                                             }
 
                                             setTotal(subTotals.reduce(reducer)) */
-                                            let newTotal = 0
+/*                                             let newTotal = 0
                                             itemsInCart.forEach(itemInCart => newTotal += itemInCart.subtotal)
-                                            setTotal(newTotal)
+                                            setTotal(newTotal) */
                                             // setTotal(itemsInCart.reduce((currentItem, previousItem) => currentItem.subtotal + previousItem.subtotal,0))
+                                            setTotal(returnTotal(itemsInCart))
                                         }
 
                                     } />
@@ -80,6 +98,8 @@ function Cart() {
                         </tr>
                     </tfoot>
                 </table>
+                <Link to="/home">Continue Shopping</Link>
+                <Link to="/checkout">Checkout</Link>
             </div>
         )
 
