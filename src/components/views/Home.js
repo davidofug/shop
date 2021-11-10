@@ -43,6 +43,7 @@ function Home() {
         const filteredCartItems = itemsInCart.filter(itemInCart => itemInCart._id !== itemID)
         // let selectItem = inventoryItems.filter(theInventoryItem => theInventoryItem._id === itemID)
         let [selectItem] = inventoryItems.filter(theInventoryItem => theInventoryItem._id === itemID)
+
         // setItemsInCart([...filteredCartItems, selectItem[0]])
 
         // selectItem[0]['qty'] = 1

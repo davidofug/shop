@@ -14,7 +14,6 @@ function Cart() {
     const returnTotal = (items) => {
         let sum = 0
         items.forEach(item => sum += item.subtotal)
-        // setTotal(defaultTotal)
         return sum
     }
 
