@@ -3,11 +3,17 @@ import { useCart } from '../contexts/Cart'
 import Countries from '../helpers/countries.element'
 import Districts from '../helpers/districts.element'
 import USstates from '../helpers/us.states.element'
+import {currencyFormatter, ugandaShillings} from '../helpers/currency.format'
 
 function Checkout() {
     const checkoutRef = useRef()
     const { total } = useCart()
     const [country, setCountry] = useState('Uganda')
+    const [shipping, setShipping] = useState(0)
+    const [tax, setTax] = useState(0)
+    const [discount, setDiscount] = useState(0)
+    const [voucher, setVoucher] = useState('')
+    const vouchers = ['10% off', '20% off', '30% off']
     const handlePayment = () => {
     }
 
@@ -76,24 +82,26 @@ function Checkout() {
                 </fieldset>
 
                 <fieldset>
+                    <legend>Cart Details</legend>
+                    <p>Subtotal {ugandaShillings.format(total)}</p>
+                    <p>Shipping {shipping}</p>
+                    <p>Discount {discount}</p>
+                    <p>Tax {tax}</p>
+                    <p>Total {currencyFormatter((total + shipping + tax - discount), 'UGX','en-US')}</p>
+
+                </fieldset>
+
+                <fieldset>
                     <legend>Payment</legend>
                     <div>
                         <label>Voucher code</label>
                         <input type="text" placeholder="Voucher code"/>
                     </div>
-
-{/*                     <p>Subtotal {total}</p>
-                    <p>Shipping {shipping}</p>
-                    <p>Discount {discount}</p>
-                    <p>Tax {tax}</p>
-                    <p>Total {total + shipping + tax - discount}</p> */}
-
-                </fieldset>
-
-                <div>
-                    <label>MoMO/MobileMoney <input type="radio" name="payment_method" value="momo" /></label>
+                    <label>
+                        MoMO/MobileMoney <input type="radio" name="payment_method" value="momo" />
+                    </label>
                     <label>Airtel <input type="radio"  name="payment_method" value="airtel" /></label>
-                </div>
+                </fieldset>
                 <button type="submit" onClick={handlePayment}>Pay Now</button>
             </form>
         </div>
