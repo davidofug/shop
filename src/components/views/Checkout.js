@@ -12,9 +12,28 @@ function Checkout() {
     const [shipping, setShipping] = useState(0)
     const [tax, setTax] = useState(0)
     const [discount, setDiscount] = useState(0)
-    const [voucher, setVoucher] = useState('')
-    const vouchers = ['10% off', '20% off', '30% off']
+
+    const vouchers = {
+        aaa: { rate: 10, status: 'active', amount: 10000 },
+        bbb: { rate: 20, status: 'expired', amount: 10000 },
+        ccc: { rate: 30, status: 'active', amount: null },
+        ddd: { rate: null, status: 'active', amount: null },
+        eee: { rate: null, status: 'active', amount: 17000 },
+    }
     const handlePayment = () => {
+    }
+    const getVoucherInfo = (appliedVoucher) => {
+        let theVoucher = vouchers[appliedVoucher]
+        if (theVoucher) {
+            if (theVoucher.status !== 'expired') {
+                if (!theVoucher.rate && !theVoucher.amount) {
+                    return {msg: 'Invalid voucher'}
+                }
+                return theVoucher?.amount > 0 ? { amount: theVoucher.amount } : { rate: theVoucher.rate }
+            }
+            return {msg: 'Expired voucher'}
+        }
+        return {msg:'Invalid voucher'}
     }
 
     return (
@@ -95,7 +114,14 @@ function Checkout() {
                     <legend>Payment</legend>
                     <div>
                         <label>Voucher code</label>
-                        <input type="text" placeholder="Voucher code"/>
+                        <input type="text" placeholder="Voucher code" onBlur={event => {
+                            let voucherInfo = getVoucherInfo(event.target.value)
+                            if (voucherInfo?.msg) {
+                                event.target.value = voucherInfo.msg
+                            } else {
+                                voucherInfo?.amount ? setDiscount(voucherInfo.amount):  setDiscount((voucherInfo.rate/100) * total)
+                            }
+                        }}/>
                     </div>
                     <label>
                         MoMO/MobileMoney <input type="radio" name="payment_method" value="momo" />
