@@ -106,7 +106,7 @@ function Checkout() {
                     <p>Shipping {shipping}</p>
                     <p>Discount {discount}</p>
                     <p>Tax {tax}</p>
-                    <p>Total {currencyFormatter((total + shipping + tax - discount), 'UGX','en-US')}</p>
+                    <p>Total {currencyFormatter((total + shipping + tax - discount), 'GBP','en-GB')}</p>
 
                 </fieldset>
 
