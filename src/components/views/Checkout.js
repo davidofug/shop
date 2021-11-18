@@ -3,6 +3,8 @@ import { useCart } from '../contexts/Cart'
 import Countries from '../helpers/countries.element'
 import Districts from '../helpers/districts.element'
 import USstates from '../helpers/us.states.element'
+import { Zones, getCountryZone, regions } from '../helpers/shipping'
+
 import {currencyFormatter, ugandaShillings} from '../helpers/currency.format'
 
 function Checkout() {
@@ -12,7 +14,7 @@ function Checkout() {
     const [shipping, setShipping] = useState(0)
     const [tax, setTax] = useState(0)
     const [discount, setDiscount] = useState(0)
-
+    const [zone, setZone] = useState(null)
     const vouchers = {
         aaa: { rate: 10, status: 'active', amount: 10000 },
         bbb: { rate: 20, status: 'expired', amount: 10000 },
@@ -68,7 +70,11 @@ function Checkout() {
 
                     <div>
                         <label>Country <span class="required-label">*</span></label>
-                        <Countries onChange={(event) => setCountry(event.target.value)} required id="country" />
+                        <Countries onChange={(event) => {
+                            setCountry(event.target.value)
+                            setZone(getCountryZone(event.target.value))
+                            // console.log(zone)
+                        }} required id="country" />
                     </div>
                     {country == 'Uganda' ?
                         <>
@@ -99,7 +105,12 @@ function Checkout() {
                     }
 
                 </fieldset>
-
+                {zone &&
+                    <fieldset>
+                    <legend>Shipping methods</legend>
+                    {zone.transport_mode[1]}
+                    </fieldset>
+                }
                 <fieldset>
                     <legend>Cart Details</legend>
                     <p>Subtotal {ugandaShillings.format(total)}</p>
