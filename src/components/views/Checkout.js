@@ -3,7 +3,7 @@ import { useCart } from '../contexts/Cart'
 import Countries from '../helpers/countries.element'
 import Districts from '../helpers/districts.element'
 import USstates from '../helpers/us.states.element'
-import { Zones, getCountryZone, regions } from '../helpers/shipping'
+import {getCountryZone} from '../helpers/shipping'
 
 import {currencyFormatter, ugandaShillings} from '../helpers/currency.format'
 
