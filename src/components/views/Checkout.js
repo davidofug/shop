@@ -71,6 +71,7 @@ function Checkout() {
                     <div>
                         <label>Country <span class="required-label">*</span></label>
                         <Countries onChange={(event) => {
+                            setShipping(0)
                             setCountry(event.target.value)
                             setZone(getCountryZone(event.target.value))
                         }} required id="country" />
@@ -109,13 +110,13 @@ function Checkout() {
                     }
 
                 </fieldset>
-                {zone.error
+                {zone?.error
                     ?
                     <div>{zone.error}</div>
                     :
                     <fieldset>
                     <legend>Shipping methods</legend>
-                    {zone.map(theCompany =>
+                    {zone && zone.map(theCompany =>
                             <div>
                                 <h1>{theCompany.company}</h1>
                             {
@@ -146,7 +147,6 @@ function Checkout() {
                     <p>Discount {discount}</p>
                     <p>Tax {tax}</p>
                     <p>Total {currencyFormatter((total + shipping + tax - discount))}</p>
-
                 </fieldset>
 
                 <fieldset>
