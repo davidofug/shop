@@ -136,9 +136,6 @@ console.log(Zones[zone]) */
 
 export const getCountryZone = (country) => {
     let [region_which_contain_country] = regions.filter(region => region.countries.includes(country))
-    /*         let { zone = null } = region_which_contain_country */
     let zone = region_which_contain_country ? region_which_contain_country.zone : null
-    // console.log(zone)
-    return Zones[zone]
-    // return zone ? Zones[zone] : null
+    return zone ? Zones[zone] : {'error': `Sorry, we don't ship in that location.`}
 }
