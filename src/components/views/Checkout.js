@@ -117,21 +117,25 @@ function Checkout() {
                     <fieldset>
                     <legend>Shipping methods</legend>
                     {zone && zone.map(theCompany =>
-                            <div>
+                            <div key={theCompany.company.toLocaleLowerCase()}>
                                 <h1>{theCompany.company}</h1>
                             {
-                                theCompany.classes.map((companyClass,index) =>
-                                    <div>
+                                theCompany.classes.map(companyClass =>
+                                    <div key={`${theCompany.company}_${companyClass.label}`}>
                                         <input
-                                            onChange={(event) => {
-                                                setShipping(0)
-                                                setShipping(Number(event.target.getAttribute('data-cost')))
 
+                                            onChange={(event) => {
+                                                setShipping(Number(event.target.getAttribute('data-cost')))
                                             }}
-                                            id={`${theCompany.company}_${companyClass.label}`.toLocaleLowerCase().replace(' ', '_')}
-                                            type="radio" name="shipping_class" value={`${theCompany.company}_${companyClass.label}`} data-cost={companyClass.cost} />
+
+                                            id={`${theCompany.company} ${companyClass.label}`}
+                                            type="radio"
+                                            name="shipping_class"
+                                            value={`${theCompany.company} ${companyClass.label}`}
+                                            data-cost={companyClass.cost}
+                                        />
                                         <label htmlFor={
-                                            `${theCompany.company}_${companyClass.label}`.toLocaleLowerCase().replace(' ','_')
+                                            `${theCompany.company} ${companyClass.label}`
                                         }>{`${companyClass.label} ${companyClass.cost}`}
                                         </label>
                                     </div>
