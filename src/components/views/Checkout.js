@@ -187,7 +187,7 @@ function Checkout() {
                                 <p>
                                     <input onChange={event => setPatasentePhone(event.target.value)} placeholder="Phone Number" />
                                 </p>
-                                <button onClick={async () => {
+                                <button onClick={ async () => {
                                     try {
                                         const data = {
                                             phone: patasentePhone,
@@ -205,7 +205,12 @@ function Checkout() {
                                         })
                                         .then(response => response.json())
                                         .then(data => {
-                                            console.log('Success:', data);
+                                            if (data.result == 'success') {
+                                                setMTNSecretCode(true)
+                                                // console.log('Success:', data);
+                                            } else {
+                                                console.log(data)
+                                            }
                                         })
                                         .catch((error) => {
                                             console.error('Error:', error);
@@ -230,7 +235,7 @@ function Checkout() {
                                         */
                                     } catch (error) {
                                         console.log(error)
-                                    } 
+                                    }
                             }}>Request Token</button>
                                 {
                                     mtnSecretCode && <>
