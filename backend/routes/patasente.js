@@ -1,14 +1,41 @@
 const axios = require('axios');
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
 
-const URL = 'https://patasente.me/phantom-api/send-transaction-token/0634vhfoP/e8ad92b8b2629b0db4651612a24099b7'
+const BASE_URL = 'https://patasente.me/phantom-api';
+const { PATASENTE_APIKEY, PATASENTE_GATEWAY_KEY } = process.env;
 
 router.post('/', async function (req, res, next) {
     try {
+        const URL = `${BASE_URL}/send-transaction-token/${PATASENTE_APIKEY}/${PATASENTE_GATEWAY_KEY}`
+
         const results = await axios.post(URL,req.body)
         // console.log(results.data)
         if (results.data.indexOf('four')) {
+            res.json({
+                'result': 'success',
+            })
+        } else {
+            res.json({
+                'result': 'fail',
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.json({
+            'msg': 'Api not reached!',
+            'your_body': req.body
+        })
+    }
+});
+router.post('/send-payment', async function (req, res, next) {
+    try {
+        const URL = `${BASE_URL}/pay-with-patasente/${PATASENTE_APIKEY}/${PATASENTE_GATEWAY_KEY}`
+        const results = await axios.post(URL,req.body)
+        // console.log(results.data)
+        if (results.data.indexOf('Thank')) {
             res.json({
                 'result': 'success',
             })

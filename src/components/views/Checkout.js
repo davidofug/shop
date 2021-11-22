@@ -18,6 +18,7 @@ function Checkout() {
     const [patasenteOption, setPatasenteOption] = useState(null)
     const [patasentePhone, setPatasentePhone] = useState(null)
     const [mtnSecretCode, setMTNSecretCode] = useState(null)
+    const [secretCode, setSecretCode] = useState(null)
     const vouchers = {
         aaa: { rate: 10, status: 'active', amount: 10000 },
         bbb: { rate: 20, status: 'expired', amount: 10000 },
@@ -25,7 +26,25 @@ function Checkout() {
         ddd: { rate: null, status: 'active', amount: null },
         eee: { rate: null, status: 'active', amount: 17000 },
     }
-    const handlePayment = () => {
+    const handlePayment = async (event) => {
+        event.preventDefault()
+        console.log('Payment submitting')
+        let data = {
+            'amount': Number(total),
+            'email': 'davidwampamba@gmail.com',
+            'phone': Number(patasentePhone),
+            'secret_code': Number(secretCode),
+            'mobile_money_company_id': 1,
+            'reason':'Purchase on DevShop'
+        }
+
+        try {
+            const RESULTS = await axios.post('/patasente/send-payment', data)
+            console.log(RESULTS)
+
+        }catch (error) {
+            console.error(error)
+        }
     }
 
     const getVoucherInfo = (appliedVoucher) => {
@@ -45,7 +64,7 @@ function Checkout() {
     return (
         <div>
             <h1>Checkout</h1>
-            <form ref={checkoutRef} method="post">
+            <form method="post" onSubmit={handlePayment}>
                 <fieldset>
                     <legend>Billing info</legend>
                     <div>
@@ -187,60 +206,62 @@ function Checkout() {
                                 <p>
                                     <input onChange={event => setPatasentePhone(event.target.value)} placeholder="Phone Number" />
                                 </p>
-                                <button onClick={ async () => {
-                                    try {
-                                        const data = {
-                                            phone: patasentePhone,
-                                            mobile_company_id: 1,
-                                            // username: 'davidwampamba@gmail.com'
-                                        };
-                                        // const URL = `${process.env.REACT_APP_PATASENTE_URL}\\${process.env.REACT_APP_PATASENTE_API_KEY}\\${process.env.REACT_APP_PATASENTE_GATEWAY_KEY}`
+                                {!mtnSecretCode &&
+                                    <button onClick={async (event) => {
+                                        event.preventDefault()
+                                        try {
+                                            const data = {
+                                                phone: Number(patasentePhone),
+                                                mobile_money_company_id: 1,
+                                                // username: 'davidwampamba@gmail.com'
+                                            };
+                                            // const URL = `${process.env.REACT_APP_PATASENTE_URL}\\${process.env.REACT_APP_PATASENTE_API_KEY}\\${process.env.REACT_APP_PATASENTE_GATEWAY_KEY}`
 
-                                        fetch('/patasente', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                            },
-                                            body: JSON.stringify(data),
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.result == 'success') {
-                                                setMTNSecretCode(true)
-                                                // console.log('Success:', data);
-                                            } else {
-                                                console.log(data)
-                                            }
-                                        })
-                                        .catch((error) => {
-                                            console.error('Error:', error);
-                                        });
-
-/*                                       const RESULTS = await fetch(URL,
-                                            {
+                                            fetch('/patasente', {
                                                 method: 'POST',
                                                 headers: {
-                                                    'Access-Control-Allow-Origin': '*',
                                                     'Content-Type': 'application/json',
-                                                    'Accept':'application/json',
-                                                    'mode':'no-cors'
                                                 },
-                                                body: JSON.stringify(data)
+                                                body: JSON.stringify(data),
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.result == 'success') {
+                                                        setMTNSecretCode(true)
+                                                    } else {
+                                                        console.log(data)
+                                                    }
+                                                })
+                                                .catch((error) => {
+                                                    console.error('Error:', error);
+                                                });
+
+                                            /*const RESULTS = await fetch(URL,{
+                                            method: 'POST',
+                                            headers: {
+                                                'Access-Control-Allow-Origin': '*',
+                                                'Content-Type': 'application/json',
+                                                'Accept':'application/json',
+                                                'mode':'no-cors'
+                                            },
+                                            body: JSON.stringify(data)
                                             })
 
-                                        console.log( RESULTS.data )
-                                        if (RESULTS.data.status === 'success') {
+                                            console.log( RESULTS.data )
+                                            if (RESULTS.data.status === 'success') {
                                             setMTNSecretCode(RESULTS.data.token)
+                                            }
+                                            */
+                                        } catch (error) {
+                                            console.log(error)
                                         }
-                                        */
-                                    } catch (error) {
-                                        console.log(error)
-                                    }
-                            }}>Request Token</button>
+                                    }}>Request Token</button>}
                                 {
                                     mtnSecretCode && <>
-                                        <input placeholder="Secret code" />
-                                        <button submit>Pay</button>
+                                        <input placeholder="Secret code" onChange={(event) => setSecretCode(event.target.value)}/>
+                                        <div>
+                                            <input type="submit" value="Pay Now" />
+                                        </div>
                                     </>
                                 }
                             </>
@@ -250,18 +271,13 @@ function Checkout() {
                                     <input placeholder="Phone number" />
                                 </p>
                                 <p>
-                                    <input placeholder="Secret code..." />
+                                    <input placeholder="Secret code..." onChange={(event) => secretCode(event.target.value)} />
                                 </p>
-                                <button type="submit">Pay</button>
+                                <input type="submit" value="Pay Now" />
                             </>
                             }
                     </div>
-                    <label>
-                        MoMO/MobileMoney <input type="radio" name="payment_method" value="momo" />
-                    </label>
-                    <label>Airtel <input type="radio"  name="payment_method" value="airtel" /></label>
                 </fieldset>
-                <button type="submit" onClick={handlePayment}>Pay Now</button>
             </form>
         </div>
     )
