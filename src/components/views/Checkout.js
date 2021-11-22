@@ -4,7 +4,7 @@ import Countries from '../helpers/countries.element'
 import Districts from '../helpers/districts.element'
 import USstates from '../helpers/us.states.element'
 import {getCountryZone} from '../helpers/shipping'
-
+import axios from 'axios'
 import {currencyFormatter, ugandaShillings} from '../helpers/currency.format'
 
 function Checkout() {
@@ -15,6 +15,9 @@ function Checkout() {
     const [tax, setTax] = useState(0)
     const [discount, setDiscount] = useState(0)
     const [zone, setZone] = useState(null)
+    const [patasenteOption, setPatasenteOption] = useState(null)
+    const [patasentePhone, setPatasentePhone] = useState(null)
+    const [mtnSecretCode, setMTNSecretCode] = useState(null)
     const vouchers = {
         aaa: { rate: 10, status: 'active', amount: 10000 },
         bbb: { rate: 20, status: 'expired', amount: 10000 },
@@ -24,6 +27,7 @@ function Checkout() {
     }
     const handlePayment = () => {
     }
+
     const getVoucherInfo = (appliedVoucher) => {
         let theVoucher = vouchers[appliedVoucher]
         if (theVoucher) {
@@ -70,11 +74,16 @@ function Checkout() {
 
                     <div>
                         <label>Country <span class="required-label">*</span></label>
-                        <Countries onChange={(event) => {
-                            setShipping(0)
-                            setCountry(event.target.value)
-                            setZone(getCountryZone(event.target.value))
-                        }} required id="country" />
+                        <Countries
+                            onChange={(event) => {
+                                setShipping(0)
+                                setCountry(event.target.value)
+                                setZone(getCountryZone(event.target.value))
+                            }}
+                            required
+                            id="country"
+                        />
+
                     </div>
                     {country == 'Uganda' ?
                         <>
@@ -165,6 +174,82 @@ function Checkout() {
                                 voucherInfo?.amount ? setDiscount(voucherInfo.amount):  setDiscount((voucherInfo.rate/100) * total)
                             }
                         }}/>
+                    </div>
+                    <div>
+                        <h1>Patasente</h1>
+                        <select onChange={(event) => setPatasenteOption(Number(event.target.value))}>
+                            <option>-Select-</option>
+                            <option value="1">MTN</option>
+                            <option value="2">Airtel</option>
+                        </select>
+                        {patasenteOption === 1 ?
+                            <>
+                                <p>
+                                    <input onChange={event => setPatasentePhone(event.target.value)} placeholder="Phone Number" />
+                                </p>
+                                <button onClick={async () => {
+                                    try {
+                                        const data = {
+                                            phone: patasentePhone,
+                                            mobile_company_id: 1,
+                                            // username: 'davidwampamba@gmail.com'
+                                        };
+                                        // const URL = `${process.env.REACT_APP_PATASENTE_URL}\\${process.env.REACT_APP_PATASENTE_API_KEY}\\${process.env.REACT_APP_PATASENTE_GATEWAY_KEY}`
+
+                                        fetch('/patasente', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify(data),
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            console.log('Success:', data);
+                                        })
+                                        .catch((error) => {
+                                            console.error('Error:', error);
+                                        });
+
+/*                                       const RESULTS = await fetch(URL,
+                                            {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Access-Control-Allow-Origin': '*',
+                                                    'Content-Type': 'application/json',
+                                                    'Accept':'application/json',
+                                                    'mode':'no-cors'
+                                                },
+                                                body: JSON.stringify(data)
+                                            })
+
+                                        console.log( RESULTS.data )
+                                        if (RESULTS.data.status === 'success') {
+                                            setMTNSecretCode(RESULTS.data.token)
+                                        }
+
+                                    } catch (error) {
+                                        console.log(error)
+                                    } */
+                            }}>Request Token</button>
+                                {
+                                    mtnSecretCode && <>
+                                        <input placeholder="Secret code" />
+                                        <button submit>Pay</button>
+                                    </>
+                                }
+                            </>
+                            :
+                            <>
+                                <p>
+                                    <input placeholder="Phone number" />
+                                </p>
+                                <p>
+                                    <input placeholder="Secret code..." />
+                                </p>
+                                <button type="submit">Pay</button>
+                            </>
+                            }
                     </div>
                     <label>
                         MoMO/MobileMoney <input type="radio" name="payment_method" value="momo" />
