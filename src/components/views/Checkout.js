@@ -227,10 +227,10 @@ function Checkout() {
                                         if (RESULTS.data.status === 'success') {
                                             setMTNSecretCode(RESULTS.data.token)
                                         }
-
+                                        */
                                     } catch (error) {
                                         console.log(error)
-                                    } */
+                                    } 
                             }}>Request Token</button>
                                 {
                                     mtnSecretCode && <>
