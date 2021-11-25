@@ -20,7 +20,7 @@ function Checkout() {
     const [mtnSecretCode, setMTNSecretCode] = useState(null)
     const [secretCode, setSecretCode] = useState(null)
     const vouchers = {
-        aaa: { rate: 10, status: 'active', amount: 10000 },
+        aaa: { rate: 10, status: 'active', amount: 25000 },
         bbb: { rate: 20, status: 'expired', amount: 10000 },
         ccc: { rate: 30, status: 'active', amount: null },
         ddd: { rate: null, status: 'active', amount: null },
@@ -30,7 +30,7 @@ function Checkout() {
         event.preventDefault()
         console.log('Payment submitting')
         let data = {
-            'amount': Number(total),
+            'amount': 2000,
             'email': 'davidwampamba@gmail.com',
             'phone': Number(patasentePhone),
             'secret_code': Number(secretCode),

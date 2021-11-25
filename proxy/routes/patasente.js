@@ -4,11 +4,11 @@ const router = express.Router();
 require('dotenv').config();
 
 const BASE_URL = 'https://patasente.me/phantom-api';
-const { PATASENTE_APIKEY, PATASENTE_GATEWAY_KEY } = process.env;
+const { PATASENTE_API_KEY, PATASENTE_GATEWAY_KEY } = process.env;
 
 router.post('/', async function (req, res, next) {
     try {
-        const URL = `${BASE_URL}/send-transaction-token/${PATASENTE_APIKEY}/${PATASENTE_GATEWAY_KEY}`
+        const URL = `${BASE_URL}/send-transaction-token/${PATASENTE_API_KEY}/${PATASENTE_GATEWAY_KEY}`
 
         const results = await axios.post(URL,req.body)
         // console.log(results.data)
@@ -30,9 +30,10 @@ router.post('/', async function (req, res, next) {
         })
     }
 });
+
 router.post('/send-payment', async function (req, res, next) {
     try {
-        const URL = `${BASE_URL}/pay-with-patasente/${PATASENTE_APIKEY}/${PATASENTE_GATEWAY_KEY}`
+        const URL = `${BASE_URL}/pay-with-patasente/${PATASENTE_API_KEY}/${PATASENTE_GATEWAY_KEY}`
         const results = await axios.post(URL,req.body)
         // console.log(results.data)
         if (results.data.indexOf('Thank')) {
